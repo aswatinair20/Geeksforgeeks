@@ -1,0 +1,34 @@
+class Solution {
+    // Function to return a list containing the level order
+    // traversal in spiral form.
+    ArrayList<Integer> findSpiral(Node root) {
+        ArrayList<Integer> res = new ArrayList<>();
+        Deque<Node> dq = new ArrayDeque<>();
+        int level = 0;
+        dq.addFirst(root);
+        while(!dq.isEmpty()){
+            int size = dq.size();
+            for(int i=0 ; i<size ; i++){
+                if(level%2!=0){
+                    Node temp = dq.removeFirst();
+                    if(temp.left != null)
+                        dq.addLast(temp.left);
+                    if(temp.right != null)
+                        dq.addLast(temp.right);
+                    res.add(temp.data);
+                }
+                else{
+                    Node temp = dq.removeLast();
+                    if(temp.right != null)
+                        dq.addFirst(temp.right);
+                    if(temp.left != null)
+                        dq.addFirst(temp.left);
+                    
+                    res.add(temp.data);
+                }
+            }
+            level++;
+        }
+        return res;
+    }
+}

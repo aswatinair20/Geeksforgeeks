@@ -1,0 +1,13 @@
+class Solution:
+    def kthLargest(self, arr, k) -> int:
+        pq=[]
+        n=len(arr)
+        for i in range(n):
+            curr=0
+            for j in range(i,n):
+                curr+=arr[j]
+                if len(pq)<k:
+                    heapq.heappush(pq,curr)
+                elif pq[0]<curr:
+                    heapq.heapreplace(pq,curr)
+        return heapq.heappop(pq)

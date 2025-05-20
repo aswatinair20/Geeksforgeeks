@@ -1,0 +1,60 @@
+class Solution {
+  public:
+    Node* buildparent(Node* root, unordered_map<Node*,Node*>& mp, int target)
+    {
+        Node* curr = root;
+        Node* res = nullptr;
+        bool unfound = true;
+        
+        mp[root] = nullptr;
+        queue<Node*> toprocess;
+        toprocess.push(curr);
+        while(!toprocess.empty()){
+            Node* tmp = toprocess.front(); toprocess.pop();
+            if(unfound && tmp->data == target)
+            {
+                unfound = false;
+                res = tmp;
+            }
+            if(tmp->left){
+                mp[tmp->left] = tmp;
+                toprocess.push(tmp->left);
+            }   
+            if(tmp->right){
+                mp[tmp->right] = tmp;
+                toprocess.push(tmp->right);
+            }
+        }
+        return res;
+    }
+    int minTime(Node* root, int target) {
+        // code here
+        Node* curr = root;
+        unordered_map<Node*, Node*> par;
+        Node* targetNode = buildparent(root, par, target);     // and find the target node
+        if(!targetNode) return 0;
+        queue<Node*> fire; fire.push(targetNode);
+        unordered_set<Node*> vis; vis.insert(targetNode);
+        int times = 0;
+        while(!fire.empty())
+        {
+            int n = fire.size();
+            bool spread = false;
+            while(n--)
+            {
+                Node* curr = fire.front(); fire.pop();
+                auto tryPush = [&](Node* x) {
+                if (!vis.count(x)) { fire.push(x); vis.insert(x); spread = true; }
+                    };
+                if(curr->left)  tryPush(curr->left);
+                if(curr->right) tryPush(curr->right);
+                curr = par[curr];
+                if(curr)
+                    tryPush(curr);
+            }    
+            if(spread)  
+                times++;
+        }
+        return times;
+    }
+};

@@ -1,0 +1,15 @@
+class Solution {
+  public:
+    int sumSubstrings(string &s) {
+        // code here
+        int n = s.length();
+        int totalsum = 0, prevsum = 0;
+        
+        for(int i = 0; i < n; i++){
+            int num = s[i] - '0';
+            prevsum = prevsum * 10 + (i + 1) * num;
+            totalsum += prevsum;
+        }
+        return totalsum;
+    }
+};

@@ -1,0 +1,59 @@
+class Solution {
+    int[] printKClosest(int[] arr, int k, int x) {
+        // code here
+        ArrayList<Integer> res = new ArrayList<>();
+        int b,a;
+        int i = BinarySearch(arr, x);
+        if (arr[i] == x) {
+            b = i - 1;
+            a = i + 1;
+        } else {
+            b = i - 1;
+            a = i;
+        }
+        while(k!=0){
+            int leftDiff = b >= 0 ? Math.abs(x - arr[b]) : Integer.MAX_VALUE;
+            int rightDiff = a < arr.length ? Math.abs(x - arr[a]) : Integer.MAX_VALUE;
+            
+            if(leftDiff < rightDiff){
+                res.add(arr[b]);
+                b--;
+                k--;
+            }else{
+                res.add(arr[a]);
+                a++;
+                k--;
+            }
+        }
+        
+        int[] result = new int[res.size()];
+        for (int j = 0; j < res.size(); j++) {
+            result[j] = res.get(j);
+        }
+        return result;
+    }
+    static int BinarySearch(int[] arr, int x){
+        int s = 0, e= arr.length-1;
+        
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(arr[mid]==x){
+                return mid;
+            }
+            if(arr[mid]>x){
+                e = mid-1;
+            }else{
+                s = mid+1;
+            }
+        }
+        if (s >= arr.length) return arr.length - 1;
+        if (e < 0) return 0;
+
+        int leftDiff = Math.abs(arr[e] - x);
+        int rightDiff = Math.abs(arr[s] - x);
+        if (leftDiff == rightDiff) {
+            return arr[s] >= arr[e] ? s : e;
+        }
+        return rightDiff < leftDiff ? s : e;
+    }
+}

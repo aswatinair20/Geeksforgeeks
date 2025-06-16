@@ -1,0 +1,39 @@
+class Solution {
+  public:
+  
+    
+    // calculate total cost if all towers is set to 'targetHeight' 
+    int calculateCost(const vector<int>&heights , const vector<int>& cost , int targetHeight) {
+        int totalCost = 0;
+        for (int i = 0 ; i < heights.size() ; i++) {
+            totalCost += abs(heights[i] - targetHeight) * cost[i];
+        }
+        return totalCost;
+    }
+  
+    int minCost(vector<int>& heights, vector<int>& cost) {
+        // code here
+        int low = *min_element(heights.begin(),heights.end()) , 
+            high = *max_element(heights.begin(),heights.end());
+        
+        while (low <= high) {
+            int targetHeight = low + (high - low) / 2;
+            int cost1 = calculateCost(heights , cost , targetHeight - 1); // cost to set all towers to 'targetHeight - 1'
+            int cost2 = calculateCost(heights , cost , targetHeight); // cost to set all towers to 'targetHeight'
+            int cost3 = calculateCost(heights , cost , targetHeight + 1); // cost to set all towers to 'targetHeight + 1'
+            
+            if (cost2 <= cost1 && cost2 < cost3) {
+               return cost2;
+            }
+            
+            if (cost1 <= cost2 && cost2 < cost3) {
+                high = targetHeight - 1;
+            } else {
+                low = targetHeight + 1;
+            }
+             
+        }
+        return -1;
+        
+    }
+};

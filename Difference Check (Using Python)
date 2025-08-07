@@ -1,0 +1,12 @@
+class Solution:
+    def minDifference(self, arr):
+        # code here
+        for i in range(len(arr)):
+            arr[i]=int(arr[i][:2]) * 60 * 60 + int(arr[i][3:5]) * 60 + int(arr[i][6:]) 
+        arr.sort()
+        m=arr[0]
+        min_diff=float('inf')
+        for i in range(len(arr)-1):
+            min_diff=min(arr[i+1]-arr[i], min_diff)
+        m=(arr[0] + 23*60*60 + 59*60 + 60) - arr[len(arr)-1]
+        return min(min_diff, m)
